@@ -1,0 +1,3 @@
+http://algs4.cs.princeton.edu/linux/
+
+run algs, drjava, checkstyle, findbugs inside directory created with createDirs.sh /usr/local/algs4
