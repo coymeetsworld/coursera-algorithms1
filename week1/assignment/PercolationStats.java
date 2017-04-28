@@ -19,8 +19,8 @@ public class PercolationStats {
             p = new Percolation(n);
             while (!p.percolates()) {
                 
-                randx = StdRandom.uniform(n);
-                randy = StdRandom.uniform(n);
+                randx = StdRandom.uniform(1,n+1); // isOpen uses 1-index
+                randy = StdRandom.uniform(1,n+1);
 
                 if (!p.isOpen(randx, randy)) {
                     p.open(randx, randy);        
@@ -41,16 +41,19 @@ public class PercolationStats {
 
     // sample standard deviation of percolation threshold
     public double stddev() {
+        if (trials == 1) return Double.NaN;
         return StdStats.stddev(results);
     }
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
+        if (trials == 1) return Double.NaN;
         return mean() - 1.960 * (stddev()/Math.sqrt(trials));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
+        if (trials == 1) return Double.NaN;
         return mean() + 1.960 * (stddev()/Math.sqrt(trials));
     }
 
