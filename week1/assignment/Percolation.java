@@ -60,10 +60,10 @@ public class Percolation {
       Checks if the cell requested is within the grid. row and col start at index 1.
     */
     private void checkIfInBounds(int row, int col) {
-        if (row < 0 || row > gridDimension) {
+        if (row <= 0 || row > gridDimension) {
             throw new java.lang.IndexOutOfBoundsException("row index " + row + " is out of bounds");
         }
-        if (col < 0 || col > gridDimension) {
+        if (col <= 0 || col > gridDimension) {
             throw new java.lang.IndexOutOfBoundsException("col index " + col + " is out of bounds");
         }
     }
@@ -72,12 +72,10 @@ public class Percolation {
     public void open(int row, int col) {
         checkIfInBounds(row, col);
         int cellNum = getCellIndex(row, col);
-
         if (cells[cellNum]) return; // already opened
         cells[cellNum] = true; // marks it open
         numOpenSites++;
 
-//System.out.println("open("+row+","+col+")");
         // Now add connections
         // East
         if (row + 1 <= gridDimension && this.isOpen(row+1, col)) {
@@ -99,7 +97,6 @@ public class Percolation {
 
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
-//System.out.println("isOpen("+row+","+col+")");
         checkIfInBounds(row, col);
         return cells[getCellIndex(row, col)];
     }
@@ -107,7 +104,7 @@ public class Percolation {
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
         checkIfInBounds(row, col);
-        return !cells[getCellIndex(row, col)];
+        return uf.connected(getCellIndex(row, col), virtualTopSite);
     }
 
     // number of open sites
