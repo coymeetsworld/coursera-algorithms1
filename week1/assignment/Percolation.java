@@ -25,7 +25,8 @@ public class Percolation {
     private boolean[] cells;
     private int numOpenSites;
     private int gridDimension;
-    private WeightedQuickUnionUF uf;
+    private WeightedQuickUnionUF ufPercolationCheck;
+    private WeightedQuickUnionUF ufFullCheck;
     private int virtualTopSite, virtualBottomSite;
 
 
@@ -40,13 +41,10 @@ public class Percolation {
         virtualTopSite = n*n;
         virtualBottomSite = n*n+1;
 
-        uf = new WeightedQuickUnionUF((n*n)+2);
-        for (int i = 1; i <= n; i++) {
-            uf.union(virtualTopSite, getCellIndex(1, i)); // row 1 is the top row, connect all nodes on that row to top site
-            uf.union(virtualBottomSite, getCellIndex(gridDimension, i)); // gridDimension is the bottom row, connect all nodes on that row to the bottom site
+        ufPercolationCheck = new WeightedQuickUnionUF((n*n)+2);
+        ufFullCheck = new WeightedQuickUnionUF((n*n)+1);
 
-        }
-    }
+		}
 
     /**
 			row and col are 1-indexed
@@ -79,19 +77,32 @@ public class Percolation {
         // Now add connections
         // East
         if (row + 1 <= gridDimension && this.isOpen(row+1, col)) {
-            uf.union(cellNum, getCellIndex(row+1, col));
+            ufPercolationCheck.union(cellNum, getCellIndex(row+1, col));
+						ufFullCheck.union(cellNum, getCellIndex(row+1, col));
         }    
         // West
         if (row - 1 > 0 && this.isOpen(row-1, col)) {
-            uf.union(cellNum, getCellIndex(row-1, col));
+            ufPercolationCheck.union(cellNum, getCellIndex(row-1, col));
+						ufFullCheck.union(cellNum, getCellIndex(row-1, col));
         }
         // North
         if (col + 1 <= gridDimension && this.isOpen(row, col+1)) { 
-            uf.union(cellNum, getCellIndex(row, col+1));
+            ufPercolationCheck.union(cellNum, getCellIndex(row, col+1));
+						ufFullCheck.union(cellNum, getCellIndex(row, col+1));
         }
         // South
         if (col - 1 > 0 && this.isOpen(row, col-1)) {
-            uf.union(cellNum, getCellIndex(row, col-1));
+            ufPercolationCheck.union(cellNum, getCellIndex(row, col-1));
+						ufFullCheck.union(cellNum, getCellIndex(row, col-1));
+        }
+
+				//If on top row, connect to virtual top on both
+				if (row == 1) {
+						ufPercolationCheck.union(virtualTopSite, cellNum);
+						ufFullCheck.union(virtualTopSite, cellNum);
+				}
+				if (row == gridDimension) { //If on bottom row, connect to virtual bottom
+            ufPercolationCheck.union(virtualBottomSite, cellNum); 
         }
     }
 
@@ -104,7 +115,7 @@ public class Percolation {
     // is site (row, col) full?
     public boolean isFull(int row, int col) {
         checkIfInBounds(row, col);
-        return uf.connected(getCellIndex(row, col), virtualTopSite);
+        return isOpen(row,col) && ufFullCheck.connected(getCellIndex(row, col), virtualTopSite);
     }
 
     // number of open sites
@@ -114,7 +125,76 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return uf.connected(virtualBottomSite, virtualTopSite);
+        return ufPercolationCheck.connected(virtualBottomSite, virtualTopSite);
     }
 
+		private void printGrid() {
+			for (int i = 1; i <= gridDimension; i++) {
+				for (int j = 1; j <= gridDimension; j++) {
+					if (this.isOpen(i,j)) {
+					  System.out.print(" X");
+					} else {
+					  System.out.print(" -");
+					}
+				}
+				System.out.println();
+			}
+		}
+	
+		private void printFullSites() {
+			for (int i = 1; i <= gridDimension; i++) {
+				for (int j = 1; j <= gridDimension; j++) {
+					if (this.isFull(i,j)) {
+					  System.out.print(" F");
+					} else {
+					  System.out.print(" -");
+					}
+				}
+				System.out.println();
+			}
+		}
+
+		public static void main(String args[]) {
+			
+			Percolation p = new Percolation(3);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+System.out.println("\n13");
+			p.open(1,3);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+			System.out.println(p.percolates());
+System.out.println("\n23");
+			p.open(2,3);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+			System.out.println(p.percolates());
+System.out.println("\n31");
+			p.open(3,1);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+			System.out.println(p.percolates());
+System.out.println("\n33");
+			p.open(3,3);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+			System.out.println(p.percolates());
+System.out.println("\n32");
+			p.open(2,1);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+			System.out.println(p.percolates());
+System.out.println("\n11");
+			p.open(1,1);
+			p.printGrid();
+System.out.println();
+			p.printFullSites();
+			System.out.println(p.percolates());
+		}
 }
