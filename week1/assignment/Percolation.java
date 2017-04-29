@@ -1,17 +1,17 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 /**
-  @author: Coy Sanders
-  @version: 4/28/2017
-  Compilation: javac-algs4 Percolation.java
-  Execution: N/A, used in PercolationClass.java
+    @author: Coy Sanders
+    @version: 04/28/2017
 
-  Implement a class that creates a n-by-n grid of sites that are blocked by default.
-  Sites can be opened and the grid can percolate if a site on the bottom row can connect to a site on the top row via a chain
-   of neighboring (north, south, west, or east) sites.
+    Compilation: javac-algs4 Percolation.java
+    Execution: N/A, used in PercolationClass.java
 
-  Source: http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+    Implement a class that creates a n-by-n grid of sites that are blocked by default.
+    Sites can be opened and the grid can percolate if a site on the bottom row can connect to a site on the top row via a chain
+     of neighboring (north, south, west, or east) sites.
 
+    Source: http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
 */
 public class Percolation {
 
@@ -45,8 +45,8 @@ public class Percolation {
          Percolation. The second union-find object will just be used to check if a site is full (i.e. don't create any
          connections with virtual bottom site.
 
-      @param n number of sites on one side of the square grid
-      @throws IllegalArgumentException if n is a non positive value
+        @param n number of sites on one side of the square grid
+        @throws IllegalArgumentException if n is a non positive value
     */
     public Percolation(int n) {
         
@@ -63,11 +63,10 @@ public class Percolation {
     }
 
 
-
     /**
-      Opens site (row, col) if it is not open already. 
-      @param row row of the site to open
-      @param col column of the site to open
+        Opens site (row, col) if it is not open already. 
+        @param row row of the site to open
+        @param col column of the site to open
     */
     public void open(int row, int col) {
 
@@ -113,48 +112,53 @@ public class Percolation {
         }
     }
 
+
     /**
-      Checks if a site at a given coordinate is open.
-      @param row row of the site to check (range 1-n)
-      @param col column of the site to check (range 1-n)
-      @return returns true if the site is open, false if otherwise
+        Checks if a site at a given coordinate is open.
+        @param row row of the site to check (range 1-n)
+        @param col column of the site to check (range 1-n)
+        @return returns true if the site is open, false if otherwise
     */
     public boolean isOpen(int row, int col) {
         checkIfInBounds(row, col);
         return sites[getSiteIndex(row, col)];
     }
 
+
     /**
-      Checks if a site at a given coordinate is full.
-      @param row row of the site to check (range 1-n)
-      @param col column of the site to check (range 1-n)
-      @return returns true if the site is full, false if otherwise
+        Checks if a site at a given coordinate is full.
+        @param row row of the site to check (range 1-n)
+        @param col column of the site to check (range 1-n)
+        @return returns true if the site is full, false if otherwise
     */
     public boolean isFull(int row, int col) {
         return isOpen(row, col) && ufFullCheck.connected(getSiteIndex(row, col), virtualTopSite);
     }
 
+
     /**
-      Returns the number of sites that are open on the grid.
-      @return number of sites that are open on the grid.
+        Returns the number of sites that are open on the grid.
+        @return number of sites that are open on the grid.
     */
     public int numberOfOpenSites() {
         return numOpenSites;
     }
 
+
     /**
-      Checks whether or not the system can percolate.
-      @return returns true if the system percolates, false if otherwise.
+        Checks whether or not the system can percolate.
+        @return returns true if the system percolates, false if otherwise.
     */
     public boolean percolates() {
         return ufPercolationCheck.connected(virtualBottomSite, virtualTopSite);
     }
 
+
     /**
-      Helper method that grabs the site index of sites object.
-      @param row row of the site (range 1-n)
-      @param col column of the site (range 1-n)
-      @return returns the index of the appropriate site, adjusted for zero-index
+        Helper method that grabs the site index of sites object.
+        @param row row of the site (range 1-n)
+        @param col column of the site (range 1-n)
+        @return returns the index of the appropriate site, adjusted for zero-index
     */
     private int getSiteIndex(int row, int col) {
         return (row-1)*gridDimension + (col-1);
@@ -162,10 +166,10 @@ public class Percolation {
 
 
     /**
-      Helper method that checks if the location requested is within the Percolation grid dimensions.
-      @param row row of the site (range 1-n)
-      @param col column of the site (range 1-n)
-      @throws IndexOutOfBoundsException if there is no site at the coordinate requested.
+        Helper method that checks if the location requested is within the Percolation grid dimensions.
+        @param row row of the site (range 1-n)
+        @param col column of the site (range 1-n)
+        @throws IndexOutOfBoundsException if there is no site at the coordinate requested.
     */
     private void checkIfInBounds(int row, int col) {
         if (row <= 0 || row > gridDimension) {
@@ -178,35 +182,29 @@ public class Percolation {
 
 
     /**
-      Helper method that prints out the grid. An X indicates an open site, a dash means it's blocked.
+        Helper method that prints out the grid. An X indicates an open site, a dash means it's blocked.
     */
     private void printGrid() {
-      for (int i = 1; i <= gridDimension; i++) {
-        for (int j = 1; j <= gridDimension; j++) {
-          if (this.isOpen(i, j)) {
-            System.out.print(" X");
-          } else {
-            System.out.print(" -");
-          }
+        for (int i = 1; i <= gridDimension; i++) {
+            for (int j = 1; j <= gridDimension; j++) {
+                if (this.isOpen(i, j)) System.out.print(" X");
+                else System.out.print(" -");
+            }
         }
         System.out.println();
-      }
     }
 
 
     /**
-      Helper method that prints out the grid. An F indicates a full site, a dash means not full.
+        Helper method that prints out the grid. An F indicates a full site, a dash means not full.
     */
     private void printFullSites() {
-      for (int i = 1; i <= gridDimension; i++) {
-        for (int j = 1; j <= gridDimension; j++) {
-          if (this.isFull(i, j)) {
-            System.out.print(" F");
-          } else {
-            System.out.print(" -");
+        for (int i = 1; i <= gridDimension; i++) {
+            for (int j = 1; j <= gridDimension; j++) {
+                if (this.isFull(i, j)) System.out.print(" F");
+                else System.out.print(" -");
           }
         }
         System.out.println();
-      }
     }
 }
