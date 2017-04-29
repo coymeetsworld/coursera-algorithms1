@@ -12,7 +12,7 @@ public class PercolationStats {
         int randx, randy;
         this.trials = trials;
         results = new double[trials];
-        if (n < 0 || trials < 0) {
+        if (n <= 0 || trials <= 0) {
             throw new java.lang.IllegalArgumentException("n and trials must be greater than 0");
         }    
         for (int i = 0; i < trials; i++) {
@@ -28,9 +28,9 @@ public class PercolationStats {
             }
             results[i] = p.numberOfOpenSites()*1.0/ (n*n); 
         }
-        System.out.println("mean = " + mean());
-        System.out.println("stddev = " + stddev());
-        System.out.println("95% confidence interval = [" + confidenceLo() + ", " + confidenceHi() + "]");
+        //System.out.println("mean = " + mean());
+        //System.out.println("stddev = " + stddev());
+        //System.out.println("95% confidence interval = [" + confidenceLo() + ", " + confidenceHi() + "]");
 
     }
 
