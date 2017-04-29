@@ -3,12 +3,12 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
     
-    private Percolation p;
     private double[] results;
     private int trials;
 
     // perform trials of independent experiments on an n-by-n grid
     public PercolationStats(int n, int trials) {
+    	  Percolation p;
         int randx, randy;
         this.trials = trials;
         results = new double[trials];
