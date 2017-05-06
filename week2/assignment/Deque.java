@@ -4,14 +4,28 @@
 
     Compilation: javac-algs4 Deque.java
     Execution: N/A, used in Permutation.java
+
+    Double-ended queue (pronounced "deck") is a generalization of a stack and a queue that supports adding and removing items from either the front or the back of the data structure.
+
 */
 public class Deque<Item> implements Iterable<Item> {
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+    private class Node {
+        Item item;
+        Node next;
+    }
 
     /**
       Construct an empty queue
     */
     public Deque() {
-        
+        head = null;
+        tail = null;
+        size = 0;
     }
 
 
@@ -19,7 +33,7 @@ public class Deque<Item> implements Iterable<Item> {
       Checks if the Deque is empty.
     */
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
 
@@ -27,7 +41,7 @@ public class Deque<Item> implements Iterable<Item> {
       Return the number of items on the deque.
     */
     public int size() {
-        return -1;
+        return size;
     }
 
 
@@ -35,7 +49,17 @@ public class Deque<Item> implements Iterable<Item> {
       Add the item to the front of the Deque.
     */
     public void addFirst(Item item) {
-        
+       Node n = new Node();
+       n.item = item;
+       if (size == 0) {
+           head = n;
+           tail = n;
+       } else {
+          Node origHead = head;
+          head = n;
+          head.next = origHead; 
+       } 
+       size++;
     }
 
 
@@ -43,7 +67,15 @@ public class Deque<Item> implements Iterable<Item> {
       Add the item to the end.
     */
     public void addLast(Item item) {
-        
+       Node n = new Node();
+       n.item = item;
+       if (size == 0) {
+           head = n;
+       } else {
+          tail.next = n;
+       } 
+       tail = n;
+       size++;
     }
 
 
@@ -51,7 +83,12 @@ public class Deque<Item> implements Iterable<Item> {
       Remove and return the item from the front.
     */
     public Item removeFirst() {
-        return null;
+        if (size == 0) {  } //throw exception
+        Node item = head.item; 
+        size--;
+        head = head.next; //even if first.next is null that's fine
+        if (size == 0) tail = null; //remove reference to last node for GC
+        return item;
     }
 
 
@@ -59,6 +96,7 @@ public class Deque<Item> implements Iterable<Item> {
       Remove and return the item from the end.
     */
     public Item removeLast() {
+        //for constant worst time removal, might need to have a pointer to prev TODO
         return null;
     }
 
