@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /**
     @author: Coy Sanders
     @version: 05/04/2017
@@ -17,6 +19,7 @@ public class Deque<Item> implements Iterable<Item> {
     private class Node {
         Item item;
         Node next;
+        Node prev;
     }
 
     /**
@@ -49,17 +52,18 @@ public class Deque<Item> implements Iterable<Item> {
       Add the item to the front of the Deque.
     */
     public void addFirst(Item item) {
-       Node n = new Node();
-       n.item = item;
-       if (size == 0) {
-           head = n;
-           tail = n;
-       } else {
-          Node origHead = head;
-          head = n;
-          head.next = origHead; 
-       } 
-       size++;
+        Node n = new Node();
+        n.item = item;
+        if (size == 0) {
+            head = n;
+            tail = n;
+        } else {
+            Node origHead = head; //todo check if necessary
+            origHead.prev = n;
+            n.next = origHead; 
+            head = n;
+        } 
+        size++;
     }
 
 
@@ -67,15 +71,16 @@ public class Deque<Item> implements Iterable<Item> {
       Add the item to the end.
     */
     public void addLast(Item item) {
-       Node n = new Node();
-       n.item = item;
-       if (size == 0) {
-           head = n;
-       } else {
-          tail.next = n;
-       } 
-       tail = n;
-       size++;
+        Node n = new Node();
+        n.item = item;
+        n.prev = tail; //todo check if we need to create origTail?
+        if (size == 0) {
+            head = n;
+        } else {
+            tail.next = n;
+        } 
+        tail = n;
+        size++;
     }
 
 
@@ -84,9 +89,12 @@ public class Deque<Item> implements Iterable<Item> {
     */
     public Item removeFirst() {
         if (size == 0) {  } //throw exception
-        Node item = head.item; 
-        size--;
+        Item item = head.item; 
         head = head.next; //even if first.next is null that's fine
+        if (size > 1) {
+            head.prev = null; // Remove connection to front node
+        } 
+        size--;
         if (size == 0) tail = null; //remove reference to last node for GC
         return item;
     }
@@ -97,7 +105,15 @@ public class Deque<Item> implements Iterable<Item> {
     */
     public Item removeLast() {
         //for constant worst time removal, might need to have a pointer to prev TODO
-        return null;
+        if (size == 0) {  } //throw exception
+        Item item = tail.item;
+        tail = tail.prev;
+        if (size > 1) {
+            tail.next = null; // Remove connection to last node
+        } 
+        size--;
+        if (size == 0) head = null; //remove reference to last node for GC
+        return item;
     }
 
 
@@ -105,15 +121,60 @@ public class Deque<Item> implements Iterable<Item> {
       Return an iterator over items in order from front to end.
     */ 
     public Iterator<Item> iterator() {
-       return null;
+        return null;
     }
 
+
+    private void print() {
+        Node n = head;
+        System.out.println("Front-to-back");
+        while (n != null) {
+            System.out.print(n.item + " --> "); 
+            n = n.next;
+        } 
+        System.out.println();
+        n = tail;
+        System.out.println("Back-to-front");
+        while (n != null) {
+            System.out.print(n.item + " --> "); 
+            n = n.prev;
+        }
+        System.out.println();
+    }
 
     /**
       Unit testing (optional)
     */
     public static void main(String[] args) {
-        
+        Deque<Integer> deque = new Deque<Integer>();
+        deque.addFirst(3);
+        deque.addFirst(2);
+        deque.addFirst(1);
+        deque.addLast(4);
+        deque.addLast(5);
+        deque.addLast(6);
+        deque.print();
+        for (int i = 0; i < 6; i++) {
+            System.out.println("Removed: " + deque.removeFirst());
+            deque.print();
+        }
+        deque.addLast(4);
+        deque.addLast(5);
+        deque.addLast(6);
+        deque.addFirst(3);
+        deque.addFirst(2);
+        deque.addFirst(1);
+        for (int i = 0; i < 6; i++) {
+            System.out.println("Removed: " + deque.removeLast());
+            deque.print();
+        }
+        deque.addLast(4);
+        deque.addLast(5);
+        deque.addLast(6);
+        deque.addFirst(3);
+        deque.addFirst(2);
+        deque.addFirst(1);
+        deque.print();
     }
 }
 
