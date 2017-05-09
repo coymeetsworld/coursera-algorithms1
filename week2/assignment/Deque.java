@@ -52,6 +52,7 @@ public class Deque<Item> implements Iterable<Item> {
       Add the item to the front of the Deque.
     */
     public void addFirst(Item item) {
+        if (item == null) throw new java.lang.NullPointerException("Can't add a null value to Deque");
         Node n = new Node();
         n.item = item;
         if (size == 0) {
@@ -71,6 +72,7 @@ public class Deque<Item> implements Iterable<Item> {
       Add the item to the end.
     */
     public void addLast(Item item) {
+        if (item == null) throw new java.lang.NullPointerException("Can't add a null value to Deque");
         Node n = new Node();
         n.item = item;
         n.prev = tail; //todo check if we need to create origTail?
@@ -88,7 +90,7 @@ public class Deque<Item> implements Iterable<Item> {
       Remove and return the item from the front.
     */
     public Item removeFirst() {
-        if (size == 0) {  } //throw exception
+        if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot remove any further items.");
         Item item = head.item; 
         head = head.next; //even if first.next is null that's fine
         if (size > 1) {
@@ -104,8 +106,7 @@ public class Deque<Item> implements Iterable<Item> {
       Remove and return the item from the end.
     */
     public Item removeLast() {
-        //for constant worst time removal, might need to have a pointer to prev TODO
-        if (size == 0) {  } //throw exception
+        if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot remove any further items.");
         Item item = tail.item;
         tail = tail.prev;
         if (size > 1) {
@@ -127,8 +128,9 @@ public class Deque<Item> implements Iterable<Item> {
     private class DequeIterator implements Iterator<Item> {
         private Node current = head;
         public boolean hasNext() { return current != null; }
-        public void remove() { /* Not supported */ }
+        public void remove() { throw new java.lang.UnsupportedOperationException("remove() is not supported."); }
         public Item next() {
+            if (current == null) throw new java.util.NoSuchElementException("No more items to return");
             Item item = current.item;
             current = current.next;
             return item;
