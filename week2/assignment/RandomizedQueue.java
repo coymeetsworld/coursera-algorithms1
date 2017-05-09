@@ -119,14 +119,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomQueueIterator implements Iterator<Item> {
-        private Node current = head;
-        public boolean hasNext() { return current != null; }
+
+        private RandomizedQueue<Item> rqueue;
+
+        private RandomQueueIterator() {
+            rqueue = new RandomizedQueue<Item>();
+            Node current = head;
+            while (current != null) {
+                rqueue.enqueue(current.item);
+                current = current.next;
+            }
+        }
+        
+       
+        public boolean hasNext() { return !rqueue.isEmpty(); }
         public void remove() { throw new java.lang.UnsupportedOperationException("remove() is not supported."); }
         public Item next() {
-            if (current == null) throw new java.util.NoSuchElementException("No more items to return");
-            Item item = current.item;
-            current = current.next;
-            return item;
+            if (rqueue.isEmpty()) throw new java.util.NoSuchElementException("No more items to return");
+            return rqueue.dequeue();
         }
     }
 
