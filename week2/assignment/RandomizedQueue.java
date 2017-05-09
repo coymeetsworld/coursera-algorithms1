@@ -70,7 +70,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Remove and return a random item.
     */
     public Item dequeue() {
-        return null;
+        Node n = head;
+        int count = StdRandom.uniform(size); // [0, size)
+        while (count-- > 0) n = n.next;
+        Item item = n.item;
+        if (n.prev != null) {
+            n.prev.next = n.next;
+        }
+        if (n.next != null) {
+            n.next.prev = n.prev; 
+        }
+        size--;
+        if (n == head && size > 1) head = n.next;
+        if (n == tail && size > 1) tail = n.prev;
+         
+        return n.item; //TODO check if this is properly being removed
     }
 
 
@@ -117,11 +131,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         for (int i = 1; i <= 9; i++) {
             rqueue.enqueue(i);
         }
-        //rqueue.print();
-        for (int i = 1; i < 101; i++) {
+        rqueue.print();
+        System.out.println("Removed: " + rqueue.dequeue());
+        rqueue.print();
+        System.out.println("Removed: " + rqueue.dequeue());
+        System.out.println("Removed: " + rqueue.dequeue());
+        rqueue.print();
+        /*for (int i = 1; i < 101; i++) {
           System.out.print(rqueue.sample() + " ");
           if (i % 10 == 0) { System.out.println(); }
-				}
+				}*/
     }
 }
 
