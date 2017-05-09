@@ -52,9 +52,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Add the item.
     */
     public void enqueue(Item item) {
+        if (item == null) throw new java.lang.NullPointerException("Can't add a null value to Deque"); 
         Node n = new Node();
         n.item = item;
-        if (size == 0) {
+        if (size == 0) { //refactor, call isEmpty() TODO
             head = n;
             tail = n;
         } else {
@@ -70,8 +71,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Remove and return a random item.
     */
     public Item dequeue() {
+        if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot remove any further items.");
         Node n = head;
-        int count = StdRandom.uniform(size); // [0, size)
+        int count = StdRandom.uniform(size); // [0, size) //Remove TODO
+        System.out.println(count);
         while (count-- > 0) n = n.next;
         Item item = n.item;
         if (n.prev != null) {
@@ -83,6 +86,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         size--;
         if (n == head && size > 1) head = n.next;
         if (n == tail && size > 1) tail = n.prev;
+        if (size == 0) {
+            head = null;
+            tail = null;
+        }
          
         return n.item; //TODO check if this is properly being removed
     }
@@ -92,6 +99,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Return (but do not remove) a random item.
     */
     public Item sample() {
+        if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot sample it.");
         Node n = head;
         int count = StdRandom.uniform(size); // [0, size)
         while (count-- > 0) n = n.next;
@@ -103,8 +111,22 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Return an independent iterator over items in random order.
     */ 
     public Iterator<Item> iterator() {
-        return null;
+        return new RandomQueueIterator();
     }
+
+    private class RandomQueueIterator implements Iterator<Item> {
+        private Node current = head;
+        public boolean hasNext() { return current != null; }
+        public void remove() { throw new java.lang.UnsupportedOperationException("remove() is not supported."); }
+        public Item next() {
+            if (current == null) throw new java.util.NoSuchElementException("No more items to return");
+            Item item = current.item;
+            current = current.next;
+            return item;
+        }
+    }
+
+
 
     private void print() {
         Node n = head;
@@ -128,6 +150,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     */ 
     public static void main(String[] args) {
         RandomizedQueue<Integer> rqueue = new RandomizedQueue<Integer>();
+        rqueue.enqueue(386);
+        rqueue.print();
+        System.out.println(rqueue.isEmpty());
+        System.out.println("Removed: " + rqueue.dequeue());
+        rqueue.print();
+        System.out.println(rqueue.isEmpty());
+        /*
         for (int i = 1; i <= 9; i++) {
             rqueue.enqueue(i);
         }
@@ -136,11 +165,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rqueue.print();
         System.out.println("Removed: " + rqueue.dequeue());
         System.out.println("Removed: " + rqueue.dequeue());
-        rqueue.print();
+        rqueue.print();*/
         /*for (int i = 1; i < 101; i++) {
           System.out.print(rqueue.sample() + " ");
           if (i % 10 == 0) { System.out.println(); }
-				}*/
+        }i*/
     }
 }
 
