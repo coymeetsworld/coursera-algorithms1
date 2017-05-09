@@ -74,8 +74,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot remove any further items.");
         Node n = head;
         int count = StdRandom.uniform(size); // [0, size) //Remove TODO
-        System.out.println(count);
-        while (count-- > 0) n = n.next;
+        //System.out.println(count);
+        for (int i = 0; i < count; i++) {
+            n = n.next;
+        }
+        //while (count-- > 0) n = n.next;
         Item item = n.item;
         if (n.prev != null) {
             n.prev.next = n.next;
@@ -83,14 +86,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (n.next != null) {
             n.next.prev = n.prev; 
         }
-        size--;
         if (n == head && size > 1) head = n.next;
         if (n == tail && size > 1) tail = n.prev;
+        size--;
         if (size == 0) {
             head = null;
             tail = null;
         }
-         
+        n.next = null;
+        n.prev = null;
         return n.item; //TODO check if this is properly being removed
     }
 
@@ -156,16 +160,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         System.out.println("Removed: " + rqueue.dequeue());
         rqueue.print();
         System.out.println(rqueue.isEmpty());
-        /*
+        
         for (int i = 1; i <= 9; i++) {
             rqueue.enqueue(i);
         }
-        rqueue.print();
-        System.out.println("Removed: " + rqueue.dequeue());
-        rqueue.print();
-        System.out.println("Removed: " + rqueue.dequeue());
-        System.out.println("Removed: " + rqueue.dequeue());
-        rqueue.print();*/
+        for (int i = 0; i < 9; i++) {
+            System.out.println("Removed: " + rqueue.dequeue());
+            rqueue.print();
+        }
         /*for (int i = 1; i < 101; i++) {
           System.out.print(rqueue.sample() + " ");
           if (i % 10 == 0) { System.out.println(); }
