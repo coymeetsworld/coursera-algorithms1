@@ -1,3 +1,6 @@
+import edu.princeton.cs.algs4.StdRandom;
+import java.util.Iterator;
+
 /**
     @author: Coy Sanders
     @version: 05/04/2017
@@ -8,11 +11,24 @@
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+    private class Node {
+        Item item;
+        Node next;
+        Node prev;
+    }
+
     /**
       Construct an empty randomized queue. 
     */
     public RandomizedQueue() {
-        
+        head = null;
+        tail = null;
+        size = 0;
     }
 
 
@@ -20,7 +36,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Is the queue empty?
     */
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
 
@@ -28,7 +44,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Return the number of items on the queue.
     */
     public int size() {
-        return -1;
+        return size;
     }
 
 
@@ -36,7 +52,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Add the item.
     */
     public void enqueue(Item item) {
-        
+        Node n = new Node();
+        n.item = item;
+        if (size == 0) {
+            head = n;
+            tail = n;
+        } else {
+            tail.next = n;
+            n.prev = tail; 
+            tail = n;
+        } 
+        size++;
     }
 
 
@@ -52,7 +78,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Return (but do not remove) a random item.
     */
     public Item sample() {
-        return null;
+        Node n = head;
+        int count = StdRandom.uniform(size); // [0, size)
+        while (count-- > 0) n = n.next;
+        return n.item;
     }
 
 
@@ -63,11 +92,36 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return null;
     }
 
+    private void print() {
+        Node n = head;
+        System.out.println("Front-to-back");
+        while (n != null) {
+            System.out.print(n.item + " --> "); 
+            n = n.next;
+        } 
+        System.out.println();
+        n = tail;
+        System.out.println("Back-to-front");
+        while (n != null) {
+            System.out.print(n.item + " --> "); 
+            n = n.prev;
+        }
+        System.out.println();
+    }
 
     /**
       Unit testing (optional)
     */ 
     public static void main(String[] args) {
-        
+        RandomizedQueue<Integer> rqueue = new RandomizedQueue<Integer>();
+        for (int i = 1; i <= 9; i++) {
+            rqueue.enqueue(i);
+        }
+        //rqueue.print();
+        for (int i = 1; i < 101; i++) {
+          System.out.print(rqueue.sample() + " ");
+          if (i % 10 == 0) { System.out.println(); }
+				}
     }
 }
+
