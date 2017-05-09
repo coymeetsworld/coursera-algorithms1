@@ -125,7 +125,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private class DequeIterator implements Iterator<Item> {
-        private Node current = first;
+        private Node current = head;
         public boolean hasNext() { return current != null; }
         public void remove() { /* Not supported */ }
         public Item next() {
