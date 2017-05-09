@@ -121,9 +121,19 @@ public class Deque<Item> implements Iterable<Item> {
       Return an iterator over items in order from front to end.
     */ 
     public Iterator<Item> iterator() {
-        return null;
+        return new DequeIterator();
     }
 
+    private class DequeIterator implements Iterator<Item> {
+        private Node current = first;
+        public boolean hasNext() { return current != null; }
+        public void remove() { /* Not supported */ }
+        public Item next() {
+            Item item = current.item;
+            current = current.next;
+            return item;
+        }
+    }
 
     private void print() {
         Node n = head;
