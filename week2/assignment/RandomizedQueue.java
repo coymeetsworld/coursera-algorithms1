@@ -70,7 +70,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // System.out.println("element to remove (start at 1): " + itemNumber);
         int count = 0;
         int i = 0;
-        while(count < itemNumber) {
+        while (count < itemNumber) {
             if (q[i] != null) {
               // System.out.println("q[" + i +"] is not null ("+q[i]+")"); 
               count++;
@@ -137,10 +137,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             queue = (Item[]) new Object[size];
             int count = 0;
             // System.out.println("Length of arr q: " + q.length);
-            for (int i = 0; i < q.length; i++) {
-               if (q[i] != null) {
-                  queue[count++] = q[i]; // Make a deep copy of the queue
-                  // System.out.println("Adding " + q[i] + " found at q["+i+"]" + " ("+ count + " item to add.)");
+            for (int j = 0; j < q.length; j++) {
+               if (q[j] != null) {
+                  queue[count++] = q[j]; // Make a deep copy of the queue
+                  // System.out.println("Adding " + q[j] + " found at q["+j+"]" + " ("+ count + " item to add.)");
                }
             }
             StdRandom.shuffle(queue); // Shuffle it
