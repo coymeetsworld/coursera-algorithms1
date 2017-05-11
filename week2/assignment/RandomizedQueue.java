@@ -77,7 +77,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         Item removedItem = q[i];
         q[i] = null;
         size--;
-        if ((double) size/q.length == 0.25) {
+        if (size != 0 && (q.length/size == 4) && (q.length%4 == 0)) {
            Item[] newQ = (Item[]) new Object[q.length/4];
            int newQIndex = 0;
            for (i = 0; i < q.length; i++) {
