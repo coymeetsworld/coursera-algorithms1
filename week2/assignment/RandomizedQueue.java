@@ -50,12 +50,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
            q = newQ;
            q[size++] = item;
         } else {
-            for (int i = 0; i < q.length; i++) {
-               if (q[i] == null) {
-                   q[i] = item; 
-                   size++;
-                   return;
-               }
+            if (q[size] == null) {
+                q[size++] = item;
+            } else {
+                for (int i = 0; i < q.length; i++) {
+                    if (q[i] == null) {
+                        q[i] = item; 
+                        size++;
+                        return;
+                    }
+                }
             }
         }
     }
