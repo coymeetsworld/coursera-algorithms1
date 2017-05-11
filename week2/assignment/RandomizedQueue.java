@@ -18,7 +18,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       Construct an empty randomized queue. 
     */
     public RandomizedQueue() {
-        q = (Item[]) new Object[1]; // make it bigger by default? can't because of memory constraint 
+        q = (Item[]) new Object[1];
         size = 0;
     }
 
@@ -67,32 +67,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item dequeue() {
         if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot remove any further items.");
         int itemNumber = StdRandom.uniform(size)+1; // [1, size]
-        // System.out.println("element to remove (start at 1): " + itemNumber);
         int count = 0;
         int i = 0;
         while (count < itemNumber) {
-            if (q[i] != null) {
-              // System.out.println("q[" + i +"] is not null ("+q[i]+")"); 
-              count++;
-            } else { /* System.out.println("q[" + i + "]: is null");*/ }
+            if (q[i] != null) count++;
             if (count != itemNumber) i++;
         }
 
-        // System.out.println("out");
-        // System.out.println("count: " + count);
-        // System.out.println("index to remove: " + i);
         Item removedItem = q[i];
         q[i] = null;
         size--;
         if ((double) size/q.length == 0.25) {
            Item[] newQ = (Item[]) new Object[q.length/4];
-           // System.out.println("newQ length: " + newQ.length);
            int newQIndex = 0;
            for (i = 0; i < q.length; i++) {
-               if (q[i] != null) {
-                  // System.out.println("Adding " + q[i] + " to newQ["+newQIndex+"].");
-                  newQ[newQIndex++] = q[i];
-               }
+               if (q[i] != null) newQ[newQIndex++] = q[i];
            }
            q = newQ;
         }
@@ -106,14 +95,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item sample() {
         if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot sample it.");
         int itemNumber = StdRandom.uniform(size)+1; // [1, size]
-        // System.out.println("element to remove (start at 1): " + itemNumber);
         int count = 0;
         int i = 0;
         while (count < itemNumber) {
-            if (q[i] != null) {
-              // System.out.println("q[" + i +"] is not null ("+q[i]+")"); 
-              count++;
-            } else { /* System.out.println("q[" + i + "]: is null");*/ }
+            if (q[i] != null) count++;
             if (count != itemNumber) i++;
         }
 
@@ -136,12 +121,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             i = size;
             queue = (Item[]) new Object[size];
             int count = 0;
-            // System.out.println("Length of arr q: " + q.length);
             for (int j = 0; j < q.length; j++) {
-               if (q[j] != null) {
-                  queue[count++] = q[j]; // Make a deep copy of the queue
-                  // System.out.println("Adding " + q[j] + " found at q["+j+"]" + " ("+ count + " item to add.)");
-               }
+               if (q[j] != null) queue[count++] = q[j]; // Make a deep copy of the queue
             }
             StdRandom.shuffle(queue); // Shuffle it
         }
