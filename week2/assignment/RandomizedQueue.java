@@ -70,21 +70,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     */
     public Item dequeue() {
         if (size == 0) throw new java.util.NoSuchElementException("Deque is empty, cannot remove any further items.");
-        int itemNumber = StdRandom.uniform(size)+1; // [1, size]
-        int count = 0;
-        int i = 0;
-        while (count < itemNumber) {
-            if (q[i] != null) count++;
-            if (count != itemNumber) i++;
-        }
-
-        Item removedItem = q[i];
-        q[i] = null;
+        int itemNumber = StdRandom.uniform(size); // [0, size)
+        Item removedItem = q[itemNumber];
+        q[itemNumber] = q[size-1];
+        q[size-1] = null;
         size--;
         if (size != 0 && (q.length/size == 4) && (q.length%4 == 0)) {
            Item[] newQ = (Item[]) new Object[q.length/4];
            int newQIndex = 0;
-           for (i = 0; i < q.length; i++) {
+           for (int i = 0; i < q.length; i++) {
                if (q[i] != null) newQ[newQIndex++] = q[i];
            }
            q = newQ;
