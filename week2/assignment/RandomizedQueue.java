@@ -38,11 +38,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return size;
     }
 
-    private void resizeArray(int newSize) {
-        Item[] newQ = (Item[]) new Object[newSize];
-        for (int i = 0; i < size; i++) newQ[i] = q[i];
-        q = newQ;
-    }
 
     /**
         Add the item.
@@ -75,6 +70,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item sample() {
         if (isEmpty()) throw new java.util.NoSuchElementException("Deque is empty, cannot sample it.");
         return q[StdRandom.uniform(size)];
+    }
+
+
+    /**
+       Helper method that will resize the array.
+       It will either double in size with enqueue if the array is filled, or cut it in half if its 1/4 full.
+    */
+    private void resizeArray(int newSize) {
+        Item[] newQ = (Item[]) new Object[newSize];
+        for (int i = 0; i < size; i++) newQ[i] = q[i];
+        q = newQ;
     }
 
 
