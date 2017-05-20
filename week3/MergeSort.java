@@ -13,6 +13,9 @@ public class MergeSort {
         int mid = lo + (hi - lo) / 2;
         sort(a, aux, lo, mid); // sort first half
         sort(a, aux, mid+1, hi); // sort second half
+        // If biggest item in first half <= smallest item in second, stop since it's already sorted.
+        // Helps for partially-ordered array
+        if (!less(a[mid+1], a[mid])) return;
         merge(a, aux, lo, mid, hi);
     }
 
