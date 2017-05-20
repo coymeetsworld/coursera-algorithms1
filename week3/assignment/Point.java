@@ -63,7 +63,12 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        /* YOUR CODE HERE */
+        // for horizontal slope
+        if (that.y == y && that.x == x) return Double.NEGATIVE_INFINITY;
+        if (that.x - x == 0)            return Double.POSITIVE_INFINITY;
+        if (that.y - y == 0)            return +0.0; // check if division below does this.
+        //return (double)(that.y - y)/(that.x - x);
+        return 1.0*(that.y - y)/(that.x - x); // which is faster to cast?
     }
 
     /**
@@ -80,6 +85,7 @@ public class Point implements Comparable<Point> {
      */
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
+        return -1;
     }
 
     /**
@@ -90,6 +96,7 @@ public class Point implements Comparable<Point> {
      */
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */
+        return null;
     }
 
 
@@ -105,10 +112,55 @@ public class Point implements Comparable<Point> {
         return "(" + x + ", " + y + ")";
     }
 
+
     /**
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
-        /* YOUR CODE HERE */
+
+        Point p = new Point(3,5);
+        Point q = new Point(7,9);
+        System.out.println("Should be slope of 1.0: " + p.slopeTo(q));
+
+        p = new Point(0,0);
+        q = new Point(2,4);
+        System.out.println("Should be slope of 2.0: " + p.slopeTo(q));
+
+        p = new Point(1,4);
+        q = new Point(4,25);
+        System.out.println("Should be slope of 7.0: " + p.slopeTo(q));
+
+        p = new Point(1,4);
+        q = new Point(3,13);
+        System.out.println("Should be slope of 4.5: " + p.slopeTo(q));
+
+        // Horizontal line (y2 = y1);
+        p = new Point(0,10);
+        q = new Point(5,10);
+        System.out.println("Should be slope of +0.0: " + p.slopeTo(q));
+
+        // Same point
+        p = new Point(0,0);
+        q = new Point(0,0);
+        System.out.println("Should be slope of -Infinity: " + p.slopeTo(q));
+
+        p = new Point(-2,-50);
+        q = new Point(-2,-50);
+        System.out.println("Should be slope of -Infinity: " + p.slopeTo(q));
+
+        // Same point
+        p = new Point(5,5);
+        q = new Point(5,5);
+        System.out.println("Should be slope of -Infinity: " + p.slopeTo(q));
+
+        // Vertical line (x2 = x1);
+        p = new Point(5,10);
+        q = new Point(5,25); 
+        System.out.println("Should be slope of Infinity: " + p.slopeTo(q));
+
+        // Vertical line (x2 = x1);
+        p = new Point(-5,10);
+        q = new Point(-5,25); 
+        System.out.println("Should be slope of Infinity: " + p.slopeTo(q));
     }
 }
