@@ -3,8 +3,13 @@
 
 public class MergeSort {
 
+    private static final int CUTOFF = 7; // mergesort has too much overhead for tiny subarrays.
+
     private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
-        if (hi <= lo) return;
+        if (hi <= lo + CUTOFF - 1) {
+          Insertion.sort(a, lo, hi);
+          return;
+        }
         int mid = lo + (hi - lo) / 2;
         sort(a, aux, lo, mid); // sort first half
         sort(a, aux, mid+1, hi); // sort second half
