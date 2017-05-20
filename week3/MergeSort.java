@@ -11,8 +11,8 @@ public class MergeSort {
           return;
         }
         int mid = lo + (hi - lo) / 2;
-        sort(a, aux, lo, mid); // sort first half
-        sort(a, aux, mid+1, hi); // sort second half
+        sort(aux, a, lo, mid); // sort first half
+        sort(aux, a, mid+1, hi); // sort second half
         // If biggest item in first half <= smallest item in second, stop since it's already sorted.
         // Helps for partially-ordered array
         if (!less(a[mid+1], a[mid])) return;
@@ -33,11 +33,12 @@ public class MergeSort {
            aux[k] = a[k];
 
         int i = lo, j = mid+1;
-        for (int k = lo; k <= hi; k++) {// merge
-            if (i > mid)                   a[k] = aux[j++]; // nothing left in first half
-            else if (j > hi)               a[k] = aux[i++]; // nothing left in 2nd half
-            else if (less(aux[j], aux[i])) a[k] = aux[j++];
-            else                           a[k] = aux[i++];
+        
+        for (int k = lo; k <= hi; k++) { // merge
+            if (i > mid)                   aux[k] = a[j++]; // nothing left in first half
+            else if (j > hi)               aux[k] = a[i++]; // nothing left in 2nd half
+            else if (less(aux[j], aux[i])) aux[k] = a[j++];
+            else                           aux[k] = a[i++];
         }
         assert isSorted(a, lo, hi); // postcondition: a[lo..hi] sorted
     }
