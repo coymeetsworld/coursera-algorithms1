@@ -1,18 +1,28 @@
+/******************************************************************************
+ *  @author: Coy Sanders
+ *  @version: 05/20/2017
+ *
+ *  Compilation:  javac-algs4 Point.java BruteCollinearPoints.java
+ *  Execution:    java-algs4 BruteCollinearPoints [file]
+ *  Dependencies: Point.java
+ *  
+ *  Examines 4 points at a time and checks whether they all lie on the same line segment, returning all such line segments.
+ *  For points p,q,r,s, this is done by checking if the slopes between p and q, p and r, and p and s are all equal.
+ *
+ * Performance requirement: Order of growth of the running time of the program should be n^4 in the worst case.
+ * Also, it should use space proportional to n plus the number of line segments returned.
+ *
+ *
+ *  An immutable data type for points in the plane.
+ *  For use on Coursera, Algorithms Part I programming assignment.
+ *
+ ******************************************************************************/
 
-/**
-    @author: Coy Sanders
-    @version: 05/17/2017
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 
-    Compilation: javac-algs4 BruteCollinearPoints.java
-    Execution: N/A
 
-    Examines 4 points at a time and checks whether they all lie on the same line segment, returning all such line segments.
-    For points p,q,r,s, this is done by checking if the slopes between p and q, p and r, and p and s are all equal.
-
-    Performance requirement: Order of growth of the running time of the program should be n^4 in the worst case.
-    Also, it should use space proportional to n plus the number of line segments returned.
-
-*/
 public class BruteCollinearPoints {
 
     /**
