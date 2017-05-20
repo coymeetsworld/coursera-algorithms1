@@ -2,9 +2,9 @@
  *  @author: Coy Sanders
  *  @version: 05/20/2017
  *
- *  Compilation:  javac-algs4 Point.java BruteCollinearPoints.java
+ *  Compilation:  javac-algs4 Point.java LineSegment.java BruteCollinearPoints.java
  *  Execution:    java-algs4 BruteCollinearPoints [file]
- *  Dependencies: Point.java
+ *  Dependencies: Point.java LineSegment.java
  *  
  *  Examines 4 points at a time and checks whether they all lie on the same line segment, returning all such line segments.
  *  For points p,q,r,s, this is done by checking if the slopes between p and q, p and r, and p and s are all equal.
@@ -21,15 +21,30 @@
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
-
+import java.util.ArrayList;
 
 public class BruteCollinearPoints {
 
+    private ArrayList<LineSegment> segments;
     /**
         Finds all line segments containing 4 points.
     */
     public BruteCollinearPoints(Point[] points) {
 
+        segments = new ArrayList<LineSegment>();
+        for (int p = 0; p < points.length; p++) {
+            for (int q = p+1; q < points.length; q++) {
+                for (int r = q+1; r < points.length; r++) {
+                    for (int s = r+1; s < points.length; s++) {
+                        if ((points[p].slopeTo(points[q]) == points[q].slopeTo(points[r])) &&
+                            (points[q].slopeTo(points[r]) == points[r].slopeTo(points[s]))) {
+//System.out.println("points: " + points[p] + " " + points[q] + " " + points[r] + " " + points[s]);
+                           segments.add(new LineSegment(points[p], points[s]));
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -37,7 +52,7 @@ public class BruteCollinearPoints {
         The number of line segments.
     */
     public int numberOfSegments() {
-        return -1;
+        return segments.size();
     }
 
 
@@ -48,7 +63,7 @@ public class BruteCollinearPoints {
         For simplicity, no input given to BruteCollinearPoints will have 5 or more collinear points.
     */
     public LineSegment[] segments() {
-        return null;
+        return segments.toArray(new LineSegment[segments.size()]);
     }
 
     public static void main(String[] args) {
