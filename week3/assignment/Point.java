@@ -67,7 +67,7 @@ public class Point implements Comparable<Point> {
         if (that.y == y && that.x == x) return Double.NEGATIVE_INFINITY;
         if (that.x - x == 0)            return Double.POSITIVE_INFINITY;
         if (that.y - y == 0)            return +0.0; // check if division below does this.
-        //return (double)(that.y - y)/(that.x - x);
+        // return (double)(that.y - y)/(that.x - x);
         return 1.0*(that.y - y)/(that.x - x); // which is faster to cast?
     }
 
@@ -117,49 +117,49 @@ public class Point implements Comparable<Point> {
         System.out.println("--------------------------------------------------");
         System.out.println("Testing slopeTo()");
         System.out.println("--------------------------------------------------");
-        Point p = new Point(3,5);
-        Point q = new Point(7,9);
+        Point p = new Point(3, 5);
+        Point q = new Point(7, 9);
         System.out.println("Should be slope of 1.0: " + p.slopeTo(q));
 
-        p = new Point(0,0);
-        q = new Point(2,4);
+        p = new Point(0, 0);
+        q = new Point(2, 4);
         System.out.println("Should be slope of 2.0: " + p.slopeTo(q));
 
-        p = new Point(1,4);
-        q = new Point(4,25);
+        p = new Point(1, 4);
+        q = new Point(4, 25);
         System.out.println("Should be slope of 7.0: " + p.slopeTo(q));
 
-        p = new Point(1,4);
-        q = new Point(3,13);
+        p = new Point(1, 4);
+        q = new Point(3, 13);
         System.out.println("Should be slope of 4.5: " + p.slopeTo(q));
 
         // Horizontal line (y2 = y1);
-        p = new Point(0,10);
-        q = new Point(5,10);
+        p = new Point(0, 10);
+        q = new Point(5, 10);
         System.out.println("Should be slope of +0.0: " + p.slopeTo(q));
 
         // Same point
-        p = new Point(0,0);
-        q = new Point(0,0);
+        p = new Point(0, 0);
+        q = new Point(0, 0);
         System.out.println("Should be slope of -Infinity: " + p.slopeTo(q));
 
-        p = new Point(-2,-50);
-        q = new Point(-2,-50);
+        p = new Point(-2, -50);
+        q = new Point(-2, -50);
         System.out.println("Should be slope of -Infinity: " + p.slopeTo(q));
 
         // Same point
-        p = new Point(5,5);
-        q = new Point(5,5);
+        p = new Point(5, 5);
+        q = new Point(5, 5);
         System.out.println("Should be slope of -Infinity: " + p.slopeTo(q));
 
         // Vertical line (x2 = x1);
-        p = new Point(5,10);
-        q = new Point(5,25); 
+        p = new Point(5, 10);
+        q = new Point(5, 25); 
         System.out.println("Should be slope of Infinity: " + p.slopeTo(q));
 
         // Vertical line (x2 = x1);
-        p = new Point(-5,10);
-        q = new Point(-5,25); 
+        p = new Point(-5, 10);
+        q = new Point(-5, 25); 
         System.out.println("Should be slope of Infinity: " + p.slopeTo(q));
     }
 
@@ -172,72 +172,72 @@ public class Point implements Comparable<Point> {
         // returns positive int if point greather than argument point
         // point is greater if arg.y > this.y, or if both equal arg.x > this.x
         System.out.println("Testing when x values are equal, y values are not");
-        Point p = new Point(0,0);
-        Point q = new Point(0,1);
+        Point p = new Point(0, 0);
+        Point q = new Point(0, 1);
         System.out.println("should return negative value: " + p.compareTo(q));
 
-        p = new Point(1,1);
-        q = new Point(1,3);
+        p = new Point(1, 1);
+        q = new Point(1, 3);
         System.out.println("should return negative value: " + p.compareTo(q));
 
-        p = new Point(0,-3);
-        q = new Point(0,-1);
+        p = new Point(0, -3);
+        q = new Point(0, -1);
         System.out.println("should return negative value: " + p.compareTo(q));
 
-        p = new Point(0,-1);
-        q = new Point(0,-3);
+        p = new Point(0, -1);
+        q = new Point(0, -3);
         System.out.println("should return positive value: " + p.compareTo(q));
 
-        p = new Point(0,10);
-        q = new Point(0,5);
+        p = new Point(0, 10);
+        q = new Point(0, 5);
         System.out.println("should return positive value: " + p.compareTo(q));
 
-        p = new Point(0,1);
-        q = new Point(0,0);
+        p = new Point(0, 1);
+        q = new Point(0, 0);
         System.out.println("should return positive value: " + p.compareTo(q));
 
         System.out.println("Testing when y values are equal, x values are not");
 
-        p = new Point(1,1);
-        q = new Point(3,1);
+        p = new Point(1, 1);
+        q = new Point(3, 1);
         System.out.println("should return negative value: " + p.compareTo(q));
 
-        p = new Point(0,-3);
-        q = new Point(5,-3);
+        p = new Point(0, -3);
+        q = new Point(5, -3);
         System.out.println("should return negative value: " + p.compareTo(q));
 
-        p = new Point(-2,0);
-        q = new Point(1,0);
+        p = new Point(-2, 0);
+        q = new Point(1, 0);
         System.out.println("should return negative value: " + p.compareTo(q));
 
-        p = new Point(1,0);
-        q = new Point(0,0);
+        p = new Point(1, 0);
+        q = new Point(0, 0);
         System.out.println("should return positive value: " + p.compareTo(q));
 
-        p = new Point(5,10);
-        q = new Point(-5,10);
+        p = new Point(5, 10);
+        q = new Point(-5, 10);
         System.out.println("should return positive value: " + p.compareTo(q));
 
-        p = new Point(2,-10);
-        q = new Point(1,-10);
+        p = new Point(2, -10);
+        q = new Point(1, -10);
         System.out.println("should return positive value: " + p.compareTo(q));
 
-        p = new Point(-2,-10);
-        q = new Point(-8,-10);
+        p = new Point(-2, -10);
+        q = new Point(-8, -10);
         System.out.println("should return positive value: " + p.compareTo(q));
 
         System.out.println("Testing when points are equal");
 
-        p = new Point(1,1);
-        q = new Point(1,1);
+        p = new Point(1, 1);
+        q = new Point(1, 1);
         System.out.println("should return 0: " + p.compareTo(q));
 
-        p = new Point(-3,-3);
-        q = new Point(-3,-3);
+        p = new Point(-3, -3);
+        q = new Point(-3, -3);
         System.out.println("should return 0: " + p.compareTo(q));
 
-        p = new Point(55,55);
-        q = new Point(55,55);
+        p = new Point(55, 55);
+        q = new Point(55, 55);
         System.out.println("should return 0: " + p.compareTo(q));
 
     }
@@ -249,16 +249,4 @@ public class Point implements Comparable<Point> {
         testSlopeTo();
         testCompareTo();
     }
-    /**
-     * Compares two points by y-coordinate, breaking ties by x-coordinate.
-     * Formally, the invoking point (x0, y0) is less than the argument point
-     * (x1, y1) if and only if either y0 < y1 or if y0 = y1 and x0 < x1.
-     *
-     * @param  that the other point
-     * @return the value <tt>0</tt> if this point is equal to the argument
-     *         point (x0 = x1 and y0 = y1);
-     *         a negative integer if this point is less than the argument
-     *         point; and a positive integer if this point is greater than the
-     *         argument point
-     */
 }

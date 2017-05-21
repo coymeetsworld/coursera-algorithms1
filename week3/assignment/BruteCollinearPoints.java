@@ -43,7 +43,8 @@ public class BruteCollinearPoints {
         Arrays.sort(aux);
 
         for (int i = 0; i < aux.length-1; i++) {
-            if (aux[i].compareTo(aux[i+1]) == 0) throw new java.lang.IllegalArgumentException("BruteCollinearPoints constructor cannot accept duplicate points in the points parameter");
+            if (aux[i].compareTo(aux[i+1]) == 0)
+                throw new java.lang.IllegalArgumentException("constructor cannot accept duplicate points in the passed array");
         }
 
         segments = new ArrayList<LineSegment>();
@@ -72,7 +73,7 @@ public class BruteCollinearPoints {
 
     /**
         Includes each line segment containing 4 points exactly once.
-        If 4 points appear on a line segments in the order of p->q->r->s, it should include either the line segment p->s or s->p,
+        If 4 points appear on a line segments in the order of p->q->r->s, it should include either the line segment p->s or s->p
         but not both. It should also not include subsegments like p->r or q->r.
         For simplicity, no input given to BruteCollinearPoints will have 5 or more collinear points.
     */
