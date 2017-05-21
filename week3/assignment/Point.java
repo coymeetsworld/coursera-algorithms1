@@ -103,9 +103,12 @@ public class Point implements Comparable<Point> {
     public Comparator<Point> slopeOrder() {
         class SlopeOrder implements Comparator<Point> {
             public int compare(Point q1, Point q2) {
+                // try q1.compareTo(q2) ? TODO
                 if (slopeTo(q1) > slopeTo(q2)) return 1;
                 else if (slopeTo(q1) < slopeTo(q2)) return -1;
-                return 0; // They are equal;
+
+                // Slopes are equal, now sort by coordinates (needed in FastCollinearPoints)
+                return q1.compareTo(q2);
             }
         }
         return new SlopeOrder();
