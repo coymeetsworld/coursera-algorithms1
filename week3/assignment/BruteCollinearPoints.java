@@ -22,6 +22,7 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BruteCollinearPoints {
 
@@ -30,6 +31,7 @@ public class BruteCollinearPoints {
         Finds all line segments containing 4 points.
     */
     public BruteCollinearPoints(Point[] points) {
+        Arrays.sort(points);
 
         segments = new ArrayList<LineSegment>();
         for (int p = 0; p < points.length; p++) {
@@ -38,7 +40,6 @@ public class BruteCollinearPoints {
                     for (int s = r+1; s < points.length; s++) {
                         if ((points[p].slopeTo(points[q]) == points[q].slopeTo(points[r])) &&
                             (points[q].slopeTo(points[r]) == points[r].slopeTo(points[s]))) {
-//System.out.println("points: " + points[p] + " " + points[q] + " " + points[r] + " " + points[s]);
                            segments.add(new LineSegment(points[p], points[s]));
                         }
                     }
