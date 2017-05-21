@@ -27,20 +27,33 @@ import java.util.Arrays;
 public class BruteCollinearPoints {
 
     private ArrayList<LineSegment> segments;
+    private Point[] aux;
     /**
         Finds all line segments containing 4 points.
     */
     public BruteCollinearPoints(Point[] points) {
-        Arrays.sort(points);
+        if (points == null) throw new java.lang.NullPointerException("Points array cannot be null.");
+        aux = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            if (points[i] == null) throw new java.lang.NullPointerException("No points in the point array can be null.");
+            aux[i] = points[i];
+        }
+
+
+        Arrays.sort(aux);
+
+        for (int i = 0; i < aux.length-1; i++) {
+            if (aux[i].compareTo(aux[i+1]) == 0) throw new java.lang.IllegalArgumentException("BruteCollinearPoints constructor cannot accept duplicate points in the points parameter");
+        }
 
         segments = new ArrayList<LineSegment>();
-        for (int p = 0; p < points.length; p++) {
-            for (int q = p+1; q < points.length; q++) {
-                for (int r = q+1; r < points.length; r++) {
-                    for (int s = r+1; s < points.length; s++) {
-                        if ((points[p].slopeTo(points[q]) == points[q].slopeTo(points[r])) &&
-                            (points[q].slopeTo(points[r]) == points[r].slopeTo(points[s]))) {
-                           segments.add(new LineSegment(points[p], points[s]));
+        for (int p = 0; p < aux.length; p++) {
+            for (int q = p+1; q < aux.length; q++) {
+                for (int r = q+1; r < aux.length; r++) {
+                    for (int s = r+1; s < aux.length; s++) {
+                        if ((aux[p].slopeTo(aux[q]) == aux[q].slopeTo(aux[r])) &&
+                            (aux[q].slopeTo(aux[r]) == aux[r].slopeTo(aux[s]))) {
+                           segments.add(new LineSegment(aux[p], aux[s]));
                         }
                     }
                 }
