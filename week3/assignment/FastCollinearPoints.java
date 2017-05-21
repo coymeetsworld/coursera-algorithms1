@@ -38,9 +38,9 @@ public class FastCollinearPoints {
 
         Arrays.sort(aux); // check if needed later TODO 
 
-System.out.println("Sorted arr");
-for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
-System.out.println("End sort\n\n");
+        // System.out.println("Sorted arr");
+        // for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
+        // System.out.println("End sort\n\n");
 
         for (int i = 0; i < aux.length-1; i++) {
             if (aux[i].compareTo(aux[i+1]) == 0)
@@ -57,47 +57,55 @@ System.out.println("End sort\n\n");
 
         for (int p = 0; p < aux.length-1; p++) {
             // p is the origin, find slope of all other points q.
-            System.out.println(aux[p] + " is the origin");
+            // System.out.println(aux[p] + " is the origin");
             Comparator<Point> comp = aux[p].slopeOrder();
             // sort sub arrays
             //Arrays.sort(a, lo, hi) sorts the subarray from a[lo] to a[hi-1] according to the natural order of a[]. You can use a Comparator as the fourth argument to sort according to an alternate order.
             Arrays.sort(aux, p, aux.length, comp);
-            System.out.println("Sorted sub array:");
-            for (int i = p; i < aux.length; i++) {
-              System.out.println(aux[i] + " " + aux[p].slopeTo(aux[i]));
-            }
+            // System.out.println("Sorted sub array:");
+            // for (int i = p+1; i < aux.length; i++) {
+                // System.out.println(aux[i] + " " + aux[p].slopeTo(aux[i]));
+            // }
             
+            int count = 0;
+            int begin = p;
+            int end = -1;
+
             for (int q = p+1; q < aux.length; q++) {
-              aux[p].slopeTo(aux[q]);
+                if (end == -1) {
+                    end = q;
+                    // System.out.println("Setting end to " + aux[q] + ". slope between begin and end: " + aux[begin].slopeTo(aux[end])); 
+                    count = 1;
+                } else {
 
-            }
-            System.out.println("\n");
-        }
-/*        int begin = 0;
-        int end = 0;
-        int count = 0;
+                    // System.out.println("slope from p to q: " + aux[p].slopeTo(aux[q]));
+                    // System.out.println("slope from p to end: " + aux[p].slopeTo(aux[end]));
 
+                    if (aux[p].slopeTo(aux[q]) == aux[p].slopeTo(aux[end])) {
+                        // System.out.println("Equal!");
+                        count++;
+                        if (aux[p].compareTo(aux[q]) < 0) end = q;
+                        else if (aux[q].compareTo(aux[end]) < 0) begin = q;
+                    } else {
 
-        for (int p = 0; p < aux.length-2; p++) {
-System.out.println("Checking slopes for point " + aux[p]);
-            begin = p;
-            count = 0;
-            for (int q = p+1; q < aux.length-1; q++) {
-                int r = q+1;
-System.out.println("Checking " + aux[q] + " and " + aux[r]);
-                if (aux[p].slopeOrder().compare(aux[q], aux[r]) == 0) {
-                  //same order
-System.out.println(aux[p] + " has same slope with " + aux[q] + " and " + aux[r]);
-                  if (count == 0) count = 2;
-                  else count++;
+                        if (count >= 3) {
+                            // System.out.println("Found a segment: between " + aux[begin] + " and " + aux[end]);
+                            segments.add(new LineSegment(aux[begin], aux[end]));
+                        }
+                        //reset count
+                        count = 1;
+                        end = q;
+                        begin = q;
+                    }
 
-                  end = r;
                 }
             }
-            if (count >= 4) {
-                segments.add(new LineSegment(aux[begin], aux[end]));
-            }
-        }*/
+            // System.out.println("\n");
+        }
+
+        // System.out.println("Sorted arr end");
+        // for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
+        // System.out.println("End sort\n\n");
     }
 
 
