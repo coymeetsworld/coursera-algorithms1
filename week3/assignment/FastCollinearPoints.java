@@ -18,13 +18,86 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class FastCollinearPoints {
+
+    private ArrayList<LineSegment> segments;
+    private Point[] aux;
 
     /**
         Finds all line segments containing 4 points.
     */
     public FastCollinearPoints(Point[] points) {
+        if (points == null) throw new java.lang.NullPointerException("Points array cannot be null.");        aux = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            if (points[i] == null) throw new java.lang.NullPointerException("No points in the point array can be null.");
+            aux[i] = points[i];
+        }
 
+        Arrays.sort(aux); // check if needed later TODO 
+
+System.out.println("Sorted arr");
+for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
+System.out.println("End sort\n\n");
+
+        for (int i = 0; i < aux.length-1; i++) {
+            if (aux[i].compareTo(aux[i+1]) == 0)
+                throw new java.lang.IllegalArgumentException("constructor cannot accept duplicate points in the passed array");
+        }
+        segments = new ArrayList<LineSegment>();
+
+        //Think of p as the origin.
+        //For each other point q, determine the slope it makes with p.
+        //Sort the points according to the slopes they makes with p.
+        //Check if any 3 (or more) adjacent points in the sorted order have equal slopes with respect to p. If so, these points, together with p, are collinear.
+        //Applying this method for each of the n points in turn yields an efficient algorithm to the problem. The algorithm solves the problem because points that have equal slopes with respect to p are collinear, and sorting brings such points together. The algorithm is fast because the bottleneck operation is sorting.
+
+
+        for (int p = 0; p < aux.length-1; p++) {
+            // p is the origin, find slope of all other points q.
+            System.out.println(aux[p] + " is the origin");
+            Comparator<Point> comp = aux[p].slopeOrder();
+            // sort sub arrays
+            //Arrays.sort(a, lo, hi) sorts the subarray from a[lo] to a[hi-1] according to the natural order of a[]. You can use a Comparator as the fourth argument to sort according to an alternate order.
+            Arrays.sort(aux, p, aux.length, comp);
+            System.out.println("Sorted sub array:");
+            for (int i = p; i < aux.length; i++) {
+              System.out.println(aux[i] + " " + aux[p].slopeTo(aux[i]));
+            }
+            
+            for (int q = p+1; q < aux.length; q++) {
+              aux[p].slopeTo(aux[q]);
+
+            }
+            System.out.println("\n");
+        }
+/*        int begin = 0;
+        int end = 0;
+        int count = 0;
+
+
+        for (int p = 0; p < aux.length-2; p++) {
+System.out.println("Checking slopes for point " + aux[p]);
+            begin = p;
+            count = 0;
+            for (int q = p+1; q < aux.length-1; q++) {
+                int r = q+1;
+System.out.println("Checking " + aux[q] + " and " + aux[r]);
+                if (aux[p].slopeOrder().compare(aux[q], aux[r]) == 0) {
+                  //same order
+System.out.println(aux[p] + " has same slope with " + aux[q] + " and " + aux[r]);
+                  if (count == 0) count = 2;
+                  else count++;
+
+                  end = r;
+                }
+            }
+            if (count >= 4) {
+                segments.add(new LineSegment(aux[begin], aux[end]));
+            }
+        }*/
     }
 
 
@@ -32,7 +105,7 @@ public class FastCollinearPoints {
         The number of line segments.
     */
     public int numberOfSegments() {
-        return -1;
+        return segments.size();
     }
 
 
@@ -43,7 +116,7 @@ public class FastCollinearPoints {
         For simplicity, no input given to BruteCollinearPoints will have 5 or more collinear points.
     */
     public LineSegment[] segments() {
-        return null;
+        return segments.toArray(new LineSegment[segments.size()]);
     }
 
 
