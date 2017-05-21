@@ -92,13 +92,24 @@ public class Point implements Comparable<Point> {
      * Compares two points by the slope they make with this point.
      * The slope is defined as in the slopeTo() method.
      *
+     * The slopeOrder() method should return a comparator that compares its two argument points by the slopes they make with
+     * the invoking point (x0, y0). Formally, the point (x1, y1) is less than the point (x2, y2)
+     * if and only if the slope (y1 − y0) / (x1 − x0) is less than the slope (y2 − y0) / (x2 − x0).
+     *
+     * Treat horizontal, vertical, and degenerate line segments as in the slopeTo() method.
+     *
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        /* YOUR CODE HERE */
-        return null;
+        class SlopeOrder implements Comparator<Point> {
+            public int compare(Point q1, Point q2) {
+                if (slopeTo(q1) > slopeTo(q2)) return 1;
+                else if (slopeTo(q1) < slopeTo(q2)) return -1;
+                return 0; // They are equal;
+            }
+        }
+        return new SlopeOrder();
     }
-
 
     /**
      * Returns a string representation of this point.
@@ -242,11 +253,34 @@ public class Point implements Comparable<Point> {
 
     }
 
+    private static void testSlopeOrder() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Testing slopeOrder()");
+        System.out.println("--------------------------------------------------");
+
+        System.out.println("Testing when x values are equal, y values are not");
+        Point p = new Point(0, 0);
+        Point q = new Point(1, 2);
+        Point r = new Point(1, 4);
+        System.out.println("should return negative value: " + p.slopeOrder().compare(q,r));
+
+        /*p = new Point(1, 1);
+        q = new Point(1, 3);
+        r = new Point(1, 3);
+        System.out.println("should return negative value: " + p.compareTo(q));
+
+        p = new Point(0, -3);
+        q = new Point(0, -1);
+        System.out.println("should return negative value: " + p.compareTo(q));*/
+    }
+
+
     /**
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
         testSlopeTo();
         testCompareTo();
+        testSlopeOrder();
     }
 }
