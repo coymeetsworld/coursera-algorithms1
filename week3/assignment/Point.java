@@ -106,9 +106,7 @@ public class Point implements Comparable<Point> {
                 // try q1.compareTo(q2) ? TODO
                 if (slopeTo(q1) > slopeTo(q2)) return 1;
                 else if (slopeTo(q1) < slopeTo(q2)) return -1;
-
-                // Slopes are equal, now sort by coordinates (needed in FastCollinearPoints)
-                return q1.compareTo(q2);
+                return 0;
             }
         }
         return new SlopeOrder();
