@@ -38,9 +38,9 @@ public class FastCollinearPoints {
 
         Arrays.sort(aux); // check if needed later TODO 
 
-        // System.out.println("Sorted arr");
-        // for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
-        // System.out.println("End sort\n\n");
+         /*System.out.println("Sorted arr");
+         for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
+         System.out.println("End sort\n\n");*/
 
         for (int i = 0; i < aux.length-1; i++) {
             if (aux[i].compareTo(aux[i+1]) == 0)
@@ -54,60 +54,75 @@ public class FastCollinearPoints {
         //Check if any 3 (or more) adjacent points in the sorted order have equal slopes with respect to p. If so, these points, together with p, are collinear.
         //Applying this method for each of the n points in turn yields an efficient algorithm to the problem. The algorithm solves the problem because points that have equal slopes with respect to p are collinear, and sorting brings such points together. The algorithm is fast because the bottleneck operation is sorting.
 
-
+        int begin;
+        int end;
+        double slope;
         for (int p = 0; p < aux.length-1; p++) {
             // p is the origin, find slope of all other points q.
-            // System.out.println(aux[p] + " is the origin");
+            //System.out.println(aux[p] + " is the origin");
             Comparator<Point> comp = aux[p].slopeOrder();
             // sort sub arrays
             //Arrays.sort(a, lo, hi) sorts the subarray from a[lo] to a[hi-1] according to the natural order of a[]. You can use a Comparator as the fourth argument to sort according to an alternate order.
             Arrays.sort(aux, p, aux.length, comp);
-            // System.out.println("Sorted sub array:");
-            // for (int i = p+1; i < aux.length; i++) {
-                // System.out.println(aux[i] + " " + aux[p].slopeTo(aux[i]));
-            // }
+             /*System.out.println("Sorted sub array:");
+             for (int i = p+1; i < aux.length; i++) {
+                 System.out.println(aux[i] + " " + aux[p].slopeTo(aux[i]));
+             }*/
             
-            int count = 0;
-            int begin = p;
-            int end = -1;
+            if (aux[p].compareTo(aux[p+1]) < 0) {
+                begin = p;
+                end = p+1;
+            } else {
+                begin = p+1;
+                end = p;
+            }
+            slope = aux[p].slopeTo(aux[p+1]);
+            //System.out.println("Slope: " + slope);
 
-            for (int q = p+1; q < aux.length; q++) {
-                if (end == -1) {
-                    end = q;
-                    // System.out.println("Setting end to " + aux[q] + ". slope between begin and end: " + aux[begin].slopeTo(aux[end])); 
-                    count = 1;
-                } else {
+            int count = 1; // one slope found between p and p+1
 
-                    // System.out.println("slope from p to q: " + aux[p].slopeTo(aux[q]));
-                    // System.out.println("slope from p to end: " + aux[p].slopeTo(aux[end]));
-
-                    if (aux[p].slopeTo(aux[q]) == aux[p].slopeTo(aux[end])) {
-                        // System.out.println("Equal!");
-                        count++;
-                        if (aux[p].compareTo(aux[q]) < 0) end = q;
-                        else if (aux[q].compareTo(aux[end]) < 0) begin = q;
-                    } else {
-
-                        if (count >= 3) {
-                            // System.out.println("Found a segment: between " + aux[begin] + " and " + aux[end]);
-                            segments.add(new LineSegment(aux[begin], aux[end]));
-                        }
-                        //reset count
-                        count = 1;
-                        end = q;
+            for (int q = p+2; q < aux.length; q++) {
+                //System.out.println("checking point: " + aux[q]);
+                if (aux[p].slopeTo(aux[q]) == slope) {
+                    //System.out.println("Equal!");
+                    count++;
+                    //positive if this > that
+                    if (aux[q].compareTo(aux[begin]) < 0) {
                         begin = q;
                     }
-
+                    else if (aux[q].compareTo(aux[end]) > 0) {
+                        end = q;
+                    }
+                } else {
+                    if (count >= 3) {
+                        //need to find smallest item
+                        //System.out.println("Found a segment: between " + aux[begin] + " and " + aux[end]);
+                        segments.add(new LineSegment(aux[begin], aux[end]));
+                    }
+                    //reset count
+                    count = 1;
+                    if (aux[p].compareTo(aux[q]) < 0) {
+                        begin = p;
+                        end = q;
+                    } else {
+                        begin = q;
+                        end = p;
+                    }
+                    slope = aux[p].slopeTo(aux[q]);
                 }
             }
-            // System.out.println("\n");
+            if (count >= 3) {
+                //need to find smallest item
+                //System.out.println("Found a segment: between " + aux[begin] + " and " + aux[end]);
+                segments.add(new LineSegment(aux[begin], aux[end]));
+            }
+            //System.out.println("\n");
         }
-
-        // System.out.println("Sorted arr end");
-        // for (int i = 0; i < aux.length; i++) System.out.println(aux[i]);
-        // System.out.println("End sort\n\n");
     }
 
+    private void checkForSegment(int count, int begin, int end) {
+
+    }
 
     /**
         The number of line segments.
